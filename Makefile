@@ -20,6 +20,12 @@ bench-all:
 bench:
 	cargo bench
 
+ensure-bacon:
+	which bacon >/dev/null 2>&1 || cargo install --locked bacon
+
+ensure-protoc:
+	which protoc >/dev/null 2>&1 || (sudo apt-get update && sudo apt-get install -y protobuf-compiler)
+
 dev:
 	bacon run --  --features=full -- -c="~/tmp/pingap?separation=true&enable_history=true" --admin=pingap:123123@127.0.0.1:3018 --autoreload
 
