@@ -828,6 +828,36 @@ export default function Plugins() {
       );
       break;
     }
+        case PluginCategory.WAF: {
+      items.push(
+        {
+          name: "type",
+          label: pluginI18n("WAFMode"),
+          placeholder: "",
+          defaultValue: pluginConfig.type as string,
+          span: 6,
+          category: ExFormItemCategory.RADIOS,
+          //options: newStringOptions(["allow", "deny"], true),
+        },
+        {
+          name: "ua_list",
+          label: pluginI18n("uaList"),
+          placeholder: pluginI18n("uaListPlaceholder"),
+          defaultValue: pluginConfig.ua_list as string[],
+          span: 6,
+          category: ExFormItemCategory.TEXTS,
+        },
+        {
+          name: "message",
+          label: pluginI18n("WAFMessage"),
+          placeholder: pluginI18n("WAFMessagePlaceholder"),
+          defaultValue: pluginConfig.message as string,
+          span: 6,
+          category: ExFormItemCategory.TEXT,
+        },
+      );
+      break;
+    }
     case PluginCategory.CSRF: {
       items.push(
         {

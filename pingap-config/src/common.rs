@@ -88,6 +88,8 @@ pub enum PluginCategory {
     RefererRestriction,
     /// User-Agent based access control
     UaRestriction,
+    /// WAF
+    WAF,
     /// Cross-Site Request Forgery protection
     Csrf,
     /// Cross-Origin Resource Sharing

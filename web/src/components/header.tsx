@@ -112,6 +112,7 @@ export function MainHeader({
 
   const zhLang = "zh";
   const enLang = "en";
+  const ruLang = "ru";
 
   const tips = (
     <DropdownMenu>
@@ -172,6 +173,16 @@ export function MainHeader({
             {lang == enLang && <Check className={iconClassName} />}
             {lang != enLang && <Languages className={iconClassName} />}
             English
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointe"
+            onClick={() => {
+              i18n.changeLanguage(ruLang);
+            }}
+          >
+            {lang == ruLang && <Check className={iconClassName} />}
+            {lang != ruLang && <Languages className={iconClassName} />}
+            Russian
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

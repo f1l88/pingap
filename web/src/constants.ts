@@ -22,6 +22,7 @@ export function getPluginSteps(category: string) {
   pluginSupportSteps[PluginCategory.REQUEST_ID] = [0, 1];
   pluginSupportSteps[PluginCategory.IP_RESTRICTION] = [0];
   pluginSupportSteps[PluginCategory.UA_RESTRICTION] = [0];
+  pluginSupportSteps[PluginCategory.WAF] = [0];
   pluginSupportSteps[PluginCategory.REFERER_RESTRICTION] = [0];
   pluginSupportSteps[PluginCategory.KEY_AUTH] = [0];
   pluginSupportSteps[PluginCategory.BASIC_AUTH] = [0];
@@ -127,6 +128,7 @@ export enum PluginCategory {
   REQUEST_ID = "request_id",
   IP_RESTRICTION = "ip_restriction",
   UA_RESTRICTION = "ua_restriction",
+  WAF = "waf",
   KEY_AUTH = "key_auth",
   BASIC_AUTH = "basic_auth",
   COMBINED_AUTH = "combined_auth",

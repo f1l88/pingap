@@ -55,6 +55,7 @@ tracing = { workspace = true }
 url = { workspace = true }
 urlencoding = { workspace = true }
 uuid = { workspace = true }
+modsecurity = "1.0.0"
 
 
 [dev-dependencies]

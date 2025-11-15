@@ -4,6 +4,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 import zh from "./zh";
 import en from "./en";
+import ru from "./ru";
 
 export function useI18n(namespace?: string) {
   const { t } = useTranslation();
@@ -26,6 +27,9 @@ i18n
     resources: {
       en: {
         translation: en,
+      },
+      ru: {
+        translation: ru,
       },
       zh: {
         translation: zh,

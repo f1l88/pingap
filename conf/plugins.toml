@@ -390,6 +390,24 @@ ua_list = ["go-http-client/1.1", "Twitterspider"]
 # Default `Request is forbidden`
 # message = "Request is forbidden"
 
+###
+# Plugin WAF Config
+###
+# WAF plugin for filtering HTTP requests based on User-Agent patterns
+[plugins.WAF]
+# Plugin type
+category = "waf"
+
+# Access control type:
+# - "allow": Only user agent in ua_list can access (whitelist)
+# - "deny": User agent in ua_list cannot access (blacklist)
+# Default `allow`
+# type = "allow"
+
+# Custom message returned when access is denied
+# Default `Request is forbidden`
+# message = "Request is forbidden"
+
 
 ###
 # Plugin RefererRestriction Config

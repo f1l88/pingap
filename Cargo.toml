@@ -71,6 +71,7 @@ rust-embed = { version = "8.7.2", features = [
 ], default-features = false }
 serde_qs = { workspace = true }
 sysinfo = { workspace = true }
+#modsecurity = { workspace = true }
 # TODO remove it after using edition 2024
 include-flate = "=0.3.0"
 # #TODO END
@@ -280,6 +281,7 @@ uuid = { version = "1.18.1", features = [
     "std",
     "fast-rng",
 ], default-features = false }
+#modsecurity = "1.0.0"
 walkdir = "2.5.0"
 x509-parser = "0.18.0"
 zstd = "0.13.3"
