@@ -13,8 +13,6 @@
 // limitations under the License.
 
 use bytesize::ByteSize;
-use once_cell::sync::Lazy;
-use once_cell::sync::OnceCell;
 use serde::{Deserialize, Serialize};
 use snafu::Snafu;
 use std::collections::HashMap;
@@ -22,7 +20,9 @@ use std::str::FromStr;
 use std::sync::atomic::AtomicU64;
 use std::sync::atomic::Ordering;
 use std::sync::Arc;
+use std::sync::LazyLock;
 use std::sync::Mutex;
+use std::sync::OnceLock;
 use tracing::info;
 
 mod file;
@@ -74,12 +74,12 @@ struct CacheBackendProvider {
     cache_backends: Mutex<HashMap<String, &'static HttpCache>>,
 }
 
-static BACKENDS: Lazy<CacheBackendProvider> =
-    Lazy::new(|| CacheBackendProvider {
+static BACKENDS: LazyLock<CacheBackendProvider> =
+    LazyLock::new(|| CacheBackendProvider {
         cache_backends: Mutex::new(HashMap::new()),
     });
 
-static MEMORY_BACKEND: OnceCell<HttpCache> = OnceCell::new();
+static MEMORY_BACKEND: OnceLock<HttpCache> = OnceLock::new();
 
 const MAX_MEMORY_SIZE: usize = 1024 * 1024 * 1024;
 
@@ -136,7 +136,7 @@ fn try_init_memory_backend(value: &str) -> &'static HttpCache {
         let available_memory =
             AVAILABLE_MEMORY.load(Ordering::Relaxed) as usize;
         let max_memory = if available_memory > 0 {
-            available_memory / 2
+            available_memory / 4
         } else {
             ByteSize::mb(256).as_u64() as usize
         };

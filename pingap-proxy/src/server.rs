@@ -24,21 +24,20 @@ use bstr::ByteSlice;
 use bytes::Bytes;
 use bytes::BytesMut;
 use http::StatusCode;
-use once_cell::sync::Lazy;
 use pingap_acme::handle_lets_encrypt;
 use pingap_certificate::CertificateProvider;
 use pingap_certificate::{GlobalCertificate, TlsSettingParams};
 use pingap_config::ConfigManager;
 use pingap_core::BackgroundTask;
+#[cfg(feature = "tracing")]
+use pingap_core::HttpResponse;
 use pingap_core::LocationInstance;
 use pingap_core::PluginProvider;
 use pingap_core::{
     get_cache_key, CompressionStat, Ctx, PluginStep, RequestPluginResult,
     ResponseBodyPluginResult, ResponsePluginResult,
 };
-use pingap_core::{
-    get_digest_detail, HttpResponse, HTTP_HEADER_NAME_X_REQUEST_ID,
-};
+use pingap_core::{get_digest_detail, HTTP_HEADER_NAME_X_REQUEST_ID};
 use pingap_core::{new_internal_error, Plugin};
 use pingap_location::{Location, LocationProvider};
 use pingap_logger::{parse_access_log_directive, Parser};
@@ -76,6 +75,7 @@ use scopeguard::defer;
 use snafu::Snafu;
 use std::sync::atomic::{AtomicI32, AtomicU64, Ordering};
 use std::sync::Arc;
+use std::sync::LazyLock;
 use std::time::{Duration, Instant};
 use tokio::sync::mpsc::Sender;
 use tracing::{debug, error, info};
@@ -215,8 +215,8 @@ pub struct ServerServices {
 const META_DEFAULTS: CacheMetaDefaults =
     CacheMetaDefaults::new(|_| Some(Duration::from_secs(1)), 1, 1);
 
-static HTTP_500_RESPONSE: Lazy<ResponseHeader> =
-    Lazy::new(|| error_resp::gen_error_response(500));
+static HTTP_500_RESPONSE: LazyLock<ResponseHeader> =
+    LazyLock::new(|| error_resp::gen_error_response(500));
 
 #[derive(Clone)]
 pub struct AppContext {
@@ -654,12 +654,11 @@ impl Server {
         let Some(location) = &ctx.upstream.location_instance else {
             let header = session.req_header();
             let host = pingap_core::get_host(header).unwrap_or_default();
-            let body = Bytes::from(format!(
-                "Location not found, host:{host} path:{}",
+            let message = format!(
+                "No matching location, host:{host} path:{}",
                 header.uri.path()
-            ));
-            HttpResponse::unknown_error(body).send(session).await?;
-            return Ok(true);
+            );
+            return Err(pingap_core::new_internal_error(500, message));
         };
 
         debug!(
@@ -1509,10 +1508,9 @@ impl ProxyHttp for Server {
 
     /// Handles proxy failures and generates appropriate error responses.
     /// Error handling for:
-    /// - Upstream connection failures (502)
+    /// - Upstream connection failures (502, 504)
     /// - Client timeouts (408)
     /// - Client disconnections (499)
-    /// - Internal server errors (500)
     /// Generates error pages using configured template
     async fn fail_to_proxy(
         &self,
@@ -1962,7 +1960,7 @@ value = 'proxy_set_headers = ["name:value"]'
         );
         assert_eq!(key.namespace_str(), Some("pingap"));
         assert_eq!(
-            r#"CacheKey { namespace: [112, 105, 110, 103, 97, 112], primary: [115, 115, 58, 71, 69, 84, 58, 47, 118, 105, 99, 97, 110, 115, 111, 47, 112, 105, 110, 103, 97, 112, 63, 115, 105, 122, 101, 61, 49], primary_bin_override: None, variance: None, user_tag: "", extensions: Extensions }"#,
+            r#"CacheKey { namespace: [112, 105, 110, 103, 97, 112], primary: [115, 115, 58, 71, 69, 84, 58, 47, 118, 105, 99, 97, 110, 115, 111, 47, 112, 105, 110, 103, 97, 112, 63, 115, 105, 122, 101, 61, 49], primary_bin_override: None, variance: None, user_tag: "", extensions: {} }"#,
             format!("{key:?}")
         );
     }

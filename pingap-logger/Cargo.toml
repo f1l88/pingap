@@ -18,7 +18,6 @@ flate2 = { workspace = true }
 http = { workspace = true }
 humantime-serde = { workspace = true }
 itoa = { workspace = true }
-once_cell = { workspace = true }
 pingap-core = { version = "0.12.0", path = "../pingap-core" }
 pingap-util = { version = "0.12.0", path = "../pingap-util" }
 pingora = { workspace = true }
@@ -50,3 +49,7 @@ criterion = { version = "0.7.0", features = ["html_reports"] }
 [[bench]]
 name = "bench"
 harness = false
+
+[lints.clippy]
+# Set the unwrap_used lint level to deny
+unwrap_used = "deny"

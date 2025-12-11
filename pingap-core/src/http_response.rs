@@ -174,6 +174,7 @@ impl HttpResponse {
     pub fn bad_request(body: impl Into<Bytes>) -> Self {
         Self::builder(StatusCode::BAD_REQUEST)
             .body(body)
+            .header(HTTP_HEADER_CONTENT_TEXT.clone())
             .no_store()
             .finish()
     }
@@ -182,6 +183,7 @@ impl HttpResponse {
     pub fn not_found(body: impl Into<Bytes>) -> Self {
         Self::builder(StatusCode::NOT_FOUND)
             .body(body)
+            .header(HTTP_HEADER_CONTENT_TEXT.clone())
             .no_store()
             .finish()
     }
@@ -190,6 +192,7 @@ impl HttpResponse {
     pub fn unknown_error(body: impl Into<Bytes>) -> Self {
         Self::builder(StatusCode::INTERNAL_SERVER_ERROR)
             .body(body)
+            .header(HTTP_HEADER_CONTENT_TEXT.clone())
             .no_store()
             .finish()
     }
@@ -457,16 +460,16 @@ mod tests {
             format!("{:?}", HttpResponse::no_content())
         );
         assert_eq!(
-            r###"HttpResponse { status: 404, body: b"Not Found", max_age: None, created_at: None, cache_private: None, headers: Some([("cache-control", "private, no-store")]) }"###,
+            r###"HttpResponse { status: 404, body: b"Not Found", max_age: None, created_at: None, cache_private: None, headers: Some([("content-type", "text/plain; charset=utf-8"), ("cache-control", "private, no-store")]) }"###,
             format!("{:?}", HttpResponse::not_found("Not Found"))
         );
         assert_eq!(
-            r###"HttpResponse { status: 500, body: b"Unknown Error", max_age: None, created_at: None, cache_private: None, headers: Some([("cache-control", "private, no-store")]) }"###,
+            r###"HttpResponse { status: 500, body: b"Unknown Error", max_age: None, created_at: None, cache_private: None, headers: Some([("content-type", "text/plain; charset=utf-8"), ("cache-control", "private, no-store")]) }"###,
             format!("{:?}", HttpResponse::unknown_error("Unknown Error"))
         );
 
         assert_eq!(
-            r###"HttpResponse { status: 400, body: b"Bad Request", max_age: None, created_at: None, cache_private: None, headers: Some([("cache-control", "private, no-store")]) }"###,
+            r###"HttpResponse { status: 400, body: b"Bad Request", max_age: None, created_at: None, cache_private: None, headers: Some([("content-type", "text/plain; charset=utf-8"), ("cache-control", "private, no-store")]) }"###,
             format!("{:?}", HttpResponse::bad_request("Bad Request"))
         );
 

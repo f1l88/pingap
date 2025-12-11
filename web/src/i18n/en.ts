@@ -328,9 +328,9 @@ export default {
     isDefault: "Default Certificate",
     dnsChallenge: "Dns 01 Challenge",
     dnsProvider: "Dns Provider",
-    dnsServiceUrl: "Dns Service Url",
+    dnsServiceUrl: "Dns Api Service Url",
     dnsServiceUrlPlaceholder:
-      "Input dns service url for update dns txt challenge",
+      "Input dns api service url for update dns txt challenge",
     isCa: "Certificate Authority",
     bufferDays: "Buffer Days",
     bufferDaysPlaceholder: "Input the buffer days for certificate",
@@ -527,6 +527,8 @@ export default {
     combinedAuthAuthRemove: "Remove",
     subFilterPath: "Path",
     subFilterPathPlaceholder: "Input the path for sub filter(e.g. ^/api/)",
+    subFilterStatusCodes: "Status Codes",
+    subFilterStatusCodesPlaceholder: "Input the status codes for sub filter(e.g. 200,201,202)",
     subFilterFilters: "Filters",
     subFilterFiltersPlaceholder:
       "Input the filters for sub filter(e.g. subs_filter 'http://pingap.io' 'https://pingap.io/api' ig)",
