@@ -1,4 +1,4 @@
-# Plugin Modsecurity for pingap
+# ModSecurity plugin for Pingap
 
 Before the pingap version is stable, no pull requests will be accepted. If you have any questions, please create a new issue first.
 
