@@ -222,3 +222,6 @@ Our current MSRV is 1.84
 ## 📄 License
 
 This project is Licensed under [Apache License, Version 2.0](./LICENSE).
+
+export PKG_CONFIG_PATH=/usr/local/modsecurity/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=/usr/local/modsecurity/lib:$LD_LIBRARY_PATH
